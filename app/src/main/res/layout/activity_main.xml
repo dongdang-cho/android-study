@@ -9,7 +9,11 @@
         <variable
             name="viewModel"
             type="com.example.exam01.MainViewModel" />
+        <variable
+            name="operation"
+            type="com.example.exam01.Operation" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -51,7 +55,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/tv_first_val"
                     app:layout_constraintRight_toLeftOf="@+id/tv_second_val"
-                    android:text="@={viewModel.ANum}"
+                    android:text="@={viewModel.inputALiveData}"
                     android:inputType="number"
                     />
 
@@ -76,7 +80,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/tv_second_val"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:text="@={viewModel.BNum}"
+                    android:text="@={viewModel.inputBLiveData}"
                     android:inputType="number"
 
                     />
@@ -96,7 +100,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/btn_minus"
-                    android:onClick="@{()-> viewModel.calc('+')}"
+                    android:onClick="@{()-> viewModel.calc(operation.Plus)}"
                     />
                 <Button
                     android:id="@+id/btn_minus"
@@ -107,7 +111,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/btn_plus"
                     app:layout_constraintRight_toLeftOf="@+id/btn_multiply"
-                    android:onClick="@{()-> viewModel.calc('-')}"
+                    android:onClick="@{()-> viewModel.calc(operation.Min)}"
                     />
                 <Button
                     android:id="@+id/btn_multiply"
@@ -118,7 +122,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/btn_minus"
                     app:layout_constraintRight_toLeftOf="@+id/btn_divide"
-                    android:onClick="@{()-> viewModel.calc('*')}"
+                    android:onClick="@{()-> viewModel.calc(operation.Mul)}"
                     />
                 <Button
                     android:id="@+id/btn_divide"
@@ -129,7 +133,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/btn_multiply"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:onClick="@{()-> viewModel.calc('/')}"
+                    android:onClick="@{()-> viewModel.calc(operation.Div)}"
                     />
             </androidx.constraintlayout.widget.ConstraintLayout>
 

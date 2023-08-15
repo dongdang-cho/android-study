@@ -14,37 +14,36 @@ class MainViewModel @Inject constructor(): ViewModel() {
 
     private val _mainViewStateLiveData = MutableLiveData<MainViewState>()
     val mainViewStateLiveData: LiveData<MainViewState> = _mainViewStateLiveData
-    var aNum : String = "0"
-    var bNum : String = "0"
+    var inputALiveData = MutableLiveData("")
+    var inputBLiveData = MutableLiveData("")
 
+    fun calc(c: Operation) {
 
-    fun calc(c : Char) {
+        val aInt = inputALiveData.value?.toInt() ?: 0
+        val bInt = inputBLiveData.value?.toInt() ?: 0
 
-        val aInt = aNum.toInt()
-        val bInt = bNum.toInt()
         viewModelScope.launch {
             _mainViewStateLiveData.value = MainViewState.ShowLoading
             delay(500)
             _mainViewStateLiveData.value = MainViewState.HideLoading
-            _mainViewStateLiveData.value = MainViewState.GetData((when(c) {
-                '+' -> plus(aInt, bInt)
-                '-' -> minus(aInt, bInt)
-                '*' -> multiply(aInt, bInt)
-                '/' -> divide(aInt, bInt)
-                else -> "잘못된 연산입니다."
-            }).toString())
+            _mainViewStateLiveData.value = MainViewState.GetData(
+                (when (c) {
+                    Operation.Plus -> plus(aInt, bInt)
+                    Operation.Min -> minus(aInt, bInt)
+                    Operation.Mul -> multiply(aInt, bInt)
+                    Operation.Div -> divide(aInt, bInt)
+                }).toString()
+            )
         }
     }
 
-    private val plus =  {x: Int, y: Int -> x+y}
-    private val minus =  {x: Int, y: Int -> x-y}
-    private val multiply =  {x: Int, y: Int -> x*y}
-    private val divide =  {x: Int, y: Int -> x/y}
+    private val plus = { x: Int, y: Int -> x + y }
+    private val minus = { x: Int, y: Int -> x - y }
+    private val multiply = { x: Int, y: Int -> x * y }
+    private val divide = { x: Int, y: Int -> x / y }
 
+}
 
-
-
-
-
-
+enum class Operation {
+    Plus, Min, Mul, Div
 }
