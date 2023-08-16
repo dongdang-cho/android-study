@@ -5,28 +5,21 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import com.example.exam01.base.BaseActivity
+import com.example.exam01.base.BaseViewModel
 import com.example.exam01.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-
-    private val mainViewModel by viewModels<MainViewModel> ()
-    private lateinit var binding: ActivityMainBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        setContentView(binding.root)
-
-        binding.viewModel = mainViewModel
-
-        mainViewModel.mainViewStateLiveData.observe(this) {
-            onChangedViewState(it)
-        }
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewState>(R.layout.activity_main) {
+    override val viewModel: MainViewModel by viewModels()
+    override fun initUi() {
+        binding.viewModel = viewModel
     }
 
-    private fun onChangedViewState(viewState: MainViewState) {
+
+    override fun onChangedViewState(viewState: MainViewState) {
         when(viewState) {
             is MainViewState.GetData -> binding.tvResult.text = viewState.string
             MainViewState.HideLoading -> binding.tvResult.isVisible = true

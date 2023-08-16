@@ -4,18 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.exam01.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(): ViewModel() {
+class MainViewModel @Inject constructor(): BaseViewModel() {
 
     private val _mainViewStateLiveData = MutableLiveData<MainViewState>()
     val mainViewStateLiveData: LiveData<MainViewState> = _mainViewStateLiveData
-    var inputALiveData = MutableLiveData("")
-    var inputBLiveData = MutableLiveData("")
+    var inputALiveData = MutableLiveData("0")
+    var inputBLiveData = MutableLiveData("0")
 
     fun calc(c: Operation) {
 
@@ -23,17 +24,17 @@ class MainViewModel @Inject constructor(): ViewModel() {
         val bInt = inputBLiveData.value?.toInt() ?: 0
 
         viewModelScope.launch {
-            _mainViewStateLiveData.value = MainViewState.ShowLoading
+            onChangedViewState(MainViewState.ShowLoading)
             delay(500)
-            _mainViewStateLiveData.value = MainViewState.HideLoading
-            _mainViewStateLiveData.value = MainViewState.GetData(
+            onChangedViewState(MainViewState.HideLoading)
+            onChangedViewState(MainViewState.GetData(
                 (when (c) {
                     Operation.Plus -> plus(aInt, bInt)
                     Operation.Min -> minus(aInt, bInt)
                     Operation.Mul -> multiply(aInt, bInt)
                     Operation.Div -> divide(aInt, bInt)
                 }).toString()
-            )
+            ))
         }
     }
 
