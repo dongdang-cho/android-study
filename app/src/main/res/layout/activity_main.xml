@@ -9,146 +9,42 @@
         <variable
             name="viewModel"
             type="com.example.exam01.MainViewModel" />
-        <variable
-            name="operation"
-            type="com.example.exam01.Operation" />
-    </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    </data>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:id="@+id/sr_layout"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_container"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            >
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/lo_first"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            tools:context=".MainActivity" >
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/rv_characters"
+                >
+
+            </androidx.recyclerview.widget.RecyclerView>
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/lo_second"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/tv_first_val"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:text="첫번째값"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/et_first_val"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <EditText
-                    android:id="@+id/et_first_val"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_first_val"
-                    app:layout_constraintRight_toLeftOf="@+id/tv_second_val"
-                    android:text="@={viewModel.inputALiveData}"
-                    android:inputType="number"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_second_val"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="두번째값"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/et_first_val"
-                    app:layout_constraintRight_toLeftOf="@+id/et_second_val"
-                    app:layout_constraintTop_toTopOf="parent"
-
-                    />
-
-                <EditText
-                    android:id="@+id/et_second_val"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_second_val"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:text="@={viewModel.inputBLiveData}"
-                    android:inputType="number"
-
-                    />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/lo_second"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/lo_first"
-                app:layout_constraintBottom_toBottomOf="parent">
-                <Button
-                    android:id="@+id/btn_plus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="더하기"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/btn_minus"
-                    android:onClick="@{()-> viewModel.calc(operation.Plus)}"
-                    />
-                <Button
-                    android:id="@+id/btn_minus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="빼기"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/btn_plus"
-                    app:layout_constraintRight_toLeftOf="@+id/btn_multiply"
-                    android:onClick="@{()-> viewModel.calc(operation.Min)}"
-                    />
-                <Button
-                    android:id="@+id/btn_multiply"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="곱하기"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/btn_minus"
-                    app:layout_constraintRight_toLeftOf="@+id/btn_divide"
-                    android:onClick="@{()-> viewModel.calc(operation.Mul)}"
-                    />
-                <Button
-                    android:id="@+id/btn_divide"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="나누기"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/btn_multiply"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:onClick="@{()-> viewModel.calc(operation.Div)}"
-                    />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+                android:indeterminate="true"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="invisible"
+                />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            app:layout_constraintTop_toBottomOf="@+id/cl_container"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:gravity="center"
-            android:textSize="30sp"
-            android:id="@+id/tv_result"
-            />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

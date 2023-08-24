@@ -1,50 +1,68 @@
 package com.example.exam01
 
+import android.app.DownloadManager
+import android.net.Uri
+import android.os.Environment
+import android.util.Log
+import android.view.View
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exam01.base.BaseViewModel
+import com.example.exam01.data.repo.MarvelRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(): BaseViewModel() {
+class MainViewModel @Inject constructor(private val marvelRepository: MarvelRepository): BaseViewModel() {
 
     private val _mainViewStateLiveData = MutableLiveData<MainViewState>()
     val mainViewStateLiveData: LiveData<MainViewState> = _mainViewStateLiveData
-    var inputALiveData = MutableLiveData("0")
-    var inputBLiveData = MutableLiveData("0")
+    var inputText = MutableLiveData("")
 
-    fun calc(c: Operation) {
+    fun search(start: Int, limit : Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            onChangedViewState(MainViewState.ShowLoading(View.VISIBLE))
+            val response = marvelRepository.searchCharacters(start, limit)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    if(it.data.results.isEmpty()) onChangedViewState(MainViewState.LastData("마지막 캐릭터 정보입니다."))
+                    else onChangedViewState(MainViewState.GetData(it.data.results))
+                } ?: kotlin.run {
+                    onChangedViewState(MainViewState.ShowToast("검색을 실패하였습니다."))
+                }
+            } else {
+                onChangedViewState(MainViewState.ShowToast("검색을 실패하였습니다."))
+            }
 
-        val aInt = inputALiveData.value?.toInt() ?: 0
-        val bInt = inputBLiveData.value?.toInt() ?: 0
+            onChangedViewState(MainViewState.ShowLoading(View.INVISIBLE))
+        }
 
-        viewModelScope.launch {
-            onChangedViewState(MainViewState.ShowLoading)
-            delay(500)
-            onChangedViewState(MainViewState.HideLoading)
-            onChangedViewState(MainViewState.GetData(
-                (when (c) {
-                    Operation.Plus -> plus(aInt, bInt)
-                    Operation.Min -> minus(aInt, bInt)
-                    Operation.Mul -> multiply(aInt, bInt)
-                    Operation.Div -> divide(aInt, bInt)
-                }).toString()
-            ))
+    }
+
+    fun refresh(start: Int, limit: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = marvelRepository.searchCharacters(start, limit)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    onChangedViewState(MainViewState.Refresh(it.data.results))
+                } ?: kotlin.run {
+                    onChangedViewState(MainViewState.ShowToast("검색을 실패하였습니다."))
+                }
+            } else {
+                onChangedViewState(MainViewState.ShowToast("검색을 실패하였습니다."))
+            }
         }
     }
 
-    private val plus = { x: Int, y: Int -> x + y }
-    private val minus = { x: Int, y: Int -> x - y }
-    private val multiply = { x: Int, y: Int -> x * y }
-    private val divide = { x: Int, y: Int -> x / y }
 
-}
 
-enum class Operation {
-    Plus, Min, Mul, Div
 }

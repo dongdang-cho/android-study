@@ -1,8 +1,12 @@
 package com.example.exam01.base
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 
@@ -29,4 +33,6 @@ abstract class BaseActivity<V : ViewDataBinding, VS: ViewState>(@LayoutRes priva
 
     abstract fun initUi()
     abstract fun onChangedViewState(viewState: VS)
+
+
 }
