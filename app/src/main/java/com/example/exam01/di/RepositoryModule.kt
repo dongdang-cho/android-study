@@ -1,21 +1,22 @@
-package com.example.exam01.di
+package com.example.movie.di
 
-import com.example.exam01.data.repo.MarvelRepository
-import com.example.exam01.data.repo.MarvelRepositoryImpl
-import com.example.exam01.data.source.MarvelRemoteDataSource
-import com.example.exam01.data.source.MarvelRemoteDataSourceImpl
+import com.example.exam01.data.repo.KakaoRepository
+import com.example.exam01.data.repo.KakaoRepositoryImpl
+import com.example.exam01.data.source.KakaoRemoteDataSource
+import com.example.exam01.data.source.KakaoRemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
-@InstallIn(SingletonComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
-    @Binds
-    abstract fun bindMarvelRepository(marvelRepositoryImpl: MarvelRepositoryImpl) : MarvelRepository
 
     @Binds
-    abstract fun bindBookRemoteDataSource(marvelRemoteDataSourceImpl: MarvelRemoteDataSourceImpl) : MarvelRemoteDataSource
+    abstract fun bindBookRepository(kakaoRepositoryImpl: KakaoRepositoryImpl) : KakaoRepository
+
+    @Binds
+    abstract fun bindBookRemoteDataSource(KakaoRemoteDataSourceImpl: KakaoRemoteDataSourceImpl) : KakaoRemoteDataSource
 
 }

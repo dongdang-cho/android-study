@@ -1,55 +1,75 @@
 package com.example.exam01
 
-import android.app.DownloadManager
-import android.net.Uri
-import android.os.Environment
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exam01.base.BaseViewModel
-import com.example.exam01.data.repo.MarvelRepository
+import com.example.exam01.domain.usecase.SearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 import javax.inject.Inject
+import com.example.exam01.util.Result
+import java.util.concurrent.atomic.AtomicBoolean
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val marvelRepository: MarvelRepository): BaseViewModel() {
+class MainViewModel @Inject constructor(
+    private val searchUseCase: SearchUseCase,
+): BaseViewModel() {
 
     private val _mainViewStateLiveData = MutableLiveData<MainViewState>()
     val mainViewStateLiveData: LiveData<MainViewState> = _mainViewStateLiveData
-    var inputText = MutableLiveData("")
 
-    fun search(start: Int, limit : Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+    var inputSearch = MutableLiveData<String>("")
+    private var isStartSearch = AtomicBoolean(false)
+    private var isEnd = false
+    private var page = DEFALUT_START_PAGE
+    val isScrollBottomPosition: Function1<Boolean, Unit> = { isBottom ->
+        if (isBottom && !isStartSearch.get()) {
+            search(page,DEFAULT_LIMIT,inputSearch.value.toString())
+        }
+    }
+
+    fun textChanged() {
+        onChangedViewState(MainViewState.Clear(""))
+        isEnd = false
+        search(DEFALUT_START_PAGE, DEFAULT_LIMIT,inputSearch.value.toString() )
+    }
+
+    private fun search(start: Int, limit : Int= DEFAULT_LIMIT, query: String) {
+        if (isEnd) {
+            onChangedViewState(MainViewState.ShowToast("마지막 데이터 입니다."))
+            return
+        }
+        viewModelScope.launch (Dispatchers.IO) {
             onChangedViewState(MainViewState.ShowLoading(View.VISIBLE))
-            val response = marvelRepository.searchCharacters(start, limit)
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    if(it.data.results.isEmpty()) onChangedViewState(MainViewState.LastData("마지막 캐릭터 정보입니다."))
-                    else onChangedViewState(MainViewState.GetData(it.data.results))
-                } ?: kotlin.run {
-                    onChangedViewState(MainViewState.ShowToast("검색을 실패하였습니다."))
+            when(val result = searchUseCase(query = query, start=start, size=limit)) {
+                is Result.Error -> {
+                    onChangedViewState(MainViewState.ShowToast(result.exception?.message?: "Error"))
+                    onChangedViewState(MainViewState.Clear(""))
+                    isEnd = false
+                    page = DEFALUT_START_PAGE
                 }
-            } else {
-                onChangedViewState(MainViewState.ShowToast("검색을 실패하였습니다."))
+                is Result.Success -> {
+                    isEnd = result.data.meta.is_end
+                    if (!isEnd) page += 1
+                    onChangedViewState(MainViewState.GetData(result.data.documents))
+                }
+                is Result.NoData -> {
+                    isEnd = false
+                    page = DEFALUT_START_PAGE
+                    onChangedViewState(MainViewState.Clear(""))
+                }
             }
-
             onChangedViewState(MainViewState.ShowLoading(View.INVISIBLE))
         }
 
     }
 
-    fun refresh(start: Int, limit: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+//    fun refresh(start: Int, limit: Int) {
+       /* viewModelScope.launch(Dispatchers.IO) {
             val response = marvelRepository.searchCharacters(start, limit)
             if (response.isSuccessful) {
                 response.body()?.let {
@@ -60,9 +80,13 @@ class MainViewModel @Inject constructor(private val marvelRepository: MarvelRepo
             } else {
                 onChangedViewState(MainViewState.ShowToast("검색을 실패하였습니다."))
             }
-        }
+        }*/
+//    }
+
+
+    companion object {
+        private const val DEFAULT_LIMIT = 50
+        private const val DEFALUT_START_PAGE = 1
     }
-
-
 
 }
