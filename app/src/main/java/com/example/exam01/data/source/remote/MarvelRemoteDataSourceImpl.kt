@@ -1,4 +1,4 @@
-package com.example.exam01.data.source
+package com.example.exam01.data.source.remote
 
 import android.util.Log
 import com.example.exam01.network.MarvelApi
@@ -7,7 +7,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class MarvelRemoteDataSourceImpl @Inject constructor(private val mavelApi: MarvelApi) :
-        MarvelRemoteDataSource {
+    MarvelRemoteDataSource {
 
 
     override suspend fun searchCharacters(start: Int, limit: Int): Response<MarvelCharatersResponse> {

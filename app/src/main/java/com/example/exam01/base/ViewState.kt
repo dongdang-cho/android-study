@@ -1,2 +1,4 @@
 package com.example.exam01.base
-interface ViewState
+interface ViewState {
+    object Idle : ViewState
+}

@@ -2,8 +2,8 @@ package com.example.exam01.di
 
 import com.example.exam01.data.repo.MarvelRepository
 import com.example.exam01.data.repo.MarvelRepositoryImpl
-import com.example.exam01.data.source.MarvelRemoteDataSource
-import com.example.exam01.data.source.MarvelRemoteDataSourceImpl
+import com.example.exam01.data.source.remote.MarvelRemoteDataSource
+import com.example.exam01.data.source.remote.MarvelRemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

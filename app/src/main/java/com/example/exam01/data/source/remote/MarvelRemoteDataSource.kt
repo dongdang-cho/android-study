@@ -1,4 +1,4 @@
-package com.example.exam01.data.source
+package com.example.exam01.data.source.remote
 
 import com.example.exam01.network.response.MarvelCharatersResponse
 import retrofit2.Response

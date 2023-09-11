@@ -9,8 +9,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
-abstract class BaseActivity<V : ViewDataBinding, VS: ViewState>(@LayoutRes private val layoutId: Int) :
+abstract class BaseActivity<V : ViewDataBinding>(@LayoutRes private val layoutId: Int) :
     AppCompatActivity() {
 
     abstract val viewModel: BaseViewModel
@@ -24,15 +26,15 @@ abstract class BaseActivity<V : ViewDataBinding, VS: ViewState>(@LayoutRes priva
         initViewModel()
     }
     private fun initViewModel() {
-        viewModel.viewStateLiveData.observe(this) { viewState ->
-            (viewState as? VS)?.let {
+        lifecycleScope.launch {
+            viewModel.uiState.collect { viewState ->
                 onChangedViewState(viewState)
             }
         }
     }
 
     abstract fun initUi()
-    abstract fun onChangedViewState(viewState: VS)
+    abstract fun onChangedViewState(viewState: ViewState)
 
 
 }

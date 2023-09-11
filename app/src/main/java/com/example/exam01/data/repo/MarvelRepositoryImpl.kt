@@ -1,6 +1,6 @@
 package com.example.exam01.data.repo
 
-import com.example.exam01.data.source.MarvelRemoteDataSource
+import com.example.exam01.data.source.remote.MarvelRemoteDataSource
 import com.example.exam01.network.response.MarvelCharatersResponse
 import retrofit2.Response
 import javax.inject.Inject
