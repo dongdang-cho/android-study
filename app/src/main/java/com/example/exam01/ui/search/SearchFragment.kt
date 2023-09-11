@@ -1,11 +1,10 @@
 package com.example.exam01.ui.search
 
-
-import android.view.View
+import android.util.Log
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.example.exam01.R
 import com.example.exam01.base.BaseFragment
 import com.example.exam01.base.ViewState
@@ -13,9 +12,7 @@ import com.example.exam01.databinding.FragmentSearchBinding
 import com.example.exam01.ui.MainViewModel
 import com.example.exam01.ui.adapter.ItemClickType
 import com.example.exam01.ui.adapter.MarvelCharacterAdapter
-import com.example.exam01.ui.search.SearchFragmentDirections
 import com.example.exam01.ext.showToast
-import com.example.exam01.ui.MainViewState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -28,19 +25,18 @@ class SearchFragment :
     private val marvelAdapter = MarvelCharacterAdapter { clickType ->
         when (clickType) {
             is ItemClickType.AddBookmark -> {
-                mainViewModel.addBookmark(clickType.item)
+//                mainViewModel.addBookmark(clickType.item)
             }
 
             is ItemClickType.DeleteBookmark -> {
-                mainViewModel.deleteBookmark(clickType.item)
+//                mainViewModel.deleteBookmark(clickType.item)
             }
 
             is ItemClickType.ItemClick -> {
-                findNavController().navigate(
-                    SearchFragmentDirections.actionFragmentSearchToFragmentDetail(
-                        clickType.item
-                    )
-                )
+//                findNavController().navigate(
+//                        clickType.item
+//                    )
+//                )
             }
         }
     }
@@ -60,7 +56,6 @@ class SearchFragment :
     }
 
     override fun onChangedViewState(viewState: ViewState) {
-
         when (viewState) {
 
             //Search
@@ -69,23 +64,19 @@ class SearchFragment :
             }
 
             is SearchViewState.ShowLoading -> {
-                binding.progressBar.visibility = viewState.flag
+                binding.progressBar.isVisible = viewState.flag
             }
 
             is SearchViewState.GetData -> {
                 marvelAdapter.addAll(viewState.list)
             }
+            is SearchViewState.Refresh -> {
+               marvelAdapter.clear()
+               marvelAdapter.addAll(viewState.list)
+               binding.srLayout.isRefreshing = false
+            }
 
 
-            //Main
-//            is MainViewState.AddBookmark -> {
-//                bookAdapter.addBookmark(viewState.item)
-//            }
-//            is MainViewState.DeleteBookmark -> {
-//                bookAdapter.deleteBookmark(viewState.item)
-//            }
-
-            else -> {}
         }
     }
 

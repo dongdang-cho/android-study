@@ -1,5 +1,6 @@
 package com.example.exam01.usecase
 
+import android.util.Log
 import com.example.exam01.data.repo.MarvelRepository
 import com.example.exam01.exception.EmptyBodyException
 import com.example.exam01.exception.NetworkFailureException

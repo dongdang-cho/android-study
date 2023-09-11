@@ -13,4 +13,5 @@ data class Data(
 ) : Parcelable {
 
     fun isLast(): Boolean = offset >= total
+
 }

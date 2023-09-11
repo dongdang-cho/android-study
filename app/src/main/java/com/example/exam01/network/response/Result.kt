@@ -23,17 +23,9 @@ data class Result(
         "${thumbnail.path}.${thumbnail.extension}"
     fun toBookmarkEntity() : BookmarkEntity =
         BookmarkEntity(
-            comics = comics,
-            description = description,
-            events = events,
             id = id,
-            modified = modified,
             name = name,
             resourceURI = resourceURI,
-            series = series,
-            stories = stories,
-            thumbnail = thumbnail,
-            urls = urls
         )
 
 }

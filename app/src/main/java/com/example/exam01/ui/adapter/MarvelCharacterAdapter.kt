@@ -29,7 +29,10 @@ class MarvelCharacterAdapter(private val clickType: (ItemClickType) -> Unit)  : 
         notifyDataSetChanged()
     }
 
-    fun clear() = characterList.clear()
+    fun clear() {
+        characterList.clear()
+        notifyDataSetChanged()
+    }
 
 }
 
