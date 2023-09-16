@@ -21,7 +21,7 @@ class MarvelCharacterAdapter(private val clickType: (ItemClickType) -> Unit)  : 
     override fun getItemCount(): Int = characterList.size
 
     override fun onBindViewHolder(holder: MarvelCharacterViewHolder, position: Int) {
-        holder.bind(characterList[position])
+        holder.bind(characterList[position], clickType)
     }
 
     fun addAll(list: List<Result>) {
@@ -38,12 +38,25 @@ class MarvelCharacterAdapter(private val clickType: (ItemClickType) -> Unit)  : 
 
 class MarvelCharacterViewHolder(private val binding: ItemMarvelCharacterBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: Result) {
+    fun bind(item: Result, onItemClick: (ItemClickType) -> Unit) {
         binding.item = item
-
+        binding.ctbFavorite.isChecked = item.isBookmark
         with(binding.ivCharacter) {
-            setOnClickListener {
+            setOnLongClickListener {
                 drawToBitmap().saveToGallery(itemView.context)
+                true
+            }
+            setOnClickListener {
+                onItemClick(ItemClickType.ItemClick(item))
+            }
+        }
+        with(binding.ctbFavorite) {
+            setOnClickListener {
+                if(isChecked) {
+                    onItemClick(ItemClickType.AddBookmark(item))
+                }else {
+                    onItemClick(ItemClickType.DeleteBookmark(item))
+                }
             }
         }
 

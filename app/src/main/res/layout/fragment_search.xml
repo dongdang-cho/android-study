@@ -30,8 +30,8 @@
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:onScrolledBottomLine="@{viewModel.isScrollBottomPosition()}"
-                app:spanCount="2">
-
+                app:spanCount="2"
+                >
             </androidx.recyclerview.widget.RecyclerView>
 
             <ProgressBar

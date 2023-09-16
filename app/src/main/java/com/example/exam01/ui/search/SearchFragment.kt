@@ -5,6 +5,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.exam01.R
 import com.example.exam01.base.BaseFragment
 import com.example.exam01.base.ViewState
@@ -25,18 +26,19 @@ class SearchFragment :
     private val marvelAdapter = MarvelCharacterAdapter { clickType ->
         when (clickType) {
             is ItemClickType.AddBookmark -> {
-//                mainViewModel.addBookmark(clickType.item)
+                mainViewModel.addBookmark(clickType.item)
             }
 
             is ItemClickType.DeleteBookmark -> {
-//                mainViewModel.deleteBookmark(clickType.item)
+                mainViewModel.deleteBookmark(clickType.item)
             }
 
             is ItemClickType.ItemClick -> {
-//                findNavController().navigate(
-//                        clickType.item
-//                    )
-//                )
+                findNavController().navigate(
+                    SearchFragmentDirections.actionFragmentSearchToFragmentDetail(
+                        clickType.item
+                    )
+                )
             }
         }
     }
