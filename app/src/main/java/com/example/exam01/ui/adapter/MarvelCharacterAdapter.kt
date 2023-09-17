@@ -9,7 +9,8 @@ import com.example.exam01.network.response.Result
 import com.example.exam01.util.MediaUtil.Companion.saveToGallery
 
 
-class MarvelCharacterAdapter(private val clickType: (ItemClickType) -> Unit)  : RecyclerView.Adapter<MarvelCharacterViewHolder>() {
+class MarvelCharacterAdapter(private val clickType: (ItemClickType) -> Unit) :
+    RecyclerView.Adapter<MarvelCharacterViewHolder>() {
     private val characterList = mutableListOf<Result>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MarvelCharacterViewHolder {
@@ -25,13 +26,31 @@ class MarvelCharacterAdapter(private val clickType: (ItemClickType) -> Unit)  : 
     }
 
     fun addAll(list: List<Result>) {
+        val beforeSize = characterList.size
         characterList.addAll(list)
-        notifyDataSetChanged()
+        val afterSize = characterList.size
+        notifyItemRangeChanged(beforeSize, afterSize)
     }
 
     fun clear() {
         characterList.clear()
         notifyDataSetChanged()
+    }
+
+    fun addBookmark(item: Result) {
+        if (characterList.contains(item)) {
+            val index = characterList.indexOf(item)
+            characterList[index] = item.copy(isBookmark = true)
+            notifyItemChanged(index)
+        }
+    }
+
+    fun deleteBookmark(item: Result) {
+        if (characterList.contains(item)) {
+            val index = characterList.indexOf(item)
+            characterList[index] = item.copy(isBookmark = false)
+            notifyItemChanged(index)
+        }
     }
 
 }
@@ -52,9 +71,9 @@ class MarvelCharacterViewHolder(private val binding: ItemMarvelCharacterBinding)
         }
         with(binding.ctbFavorite) {
             setOnClickListener {
-                if(isChecked) {
+                if (isChecked) {
                     onItemClick(ItemClickType.AddBookmark(item))
-                }else {
+                } else {
                     onItemClick(ItemClickType.DeleteBookmark(item))
                 }
             }
@@ -62,6 +81,7 @@ class MarvelCharacterViewHolder(private val binding: ItemMarvelCharacterBinding)
 
     }
 }
+
 sealed interface ItemClickType {
     data class ItemClick(val item: Result) : ItemClickType
     data class AddBookmark(val item: Result) : ItemClickType

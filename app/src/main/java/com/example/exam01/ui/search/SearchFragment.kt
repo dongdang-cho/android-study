@@ -14,6 +14,7 @@ import com.example.exam01.ui.MainViewModel
 import com.example.exam01.ui.adapter.ItemClickType
 import com.example.exam01.ui.adapter.MarvelCharacterAdapter
 import com.example.exam01.ext.showToast
+import com.example.exam01.ui.MainViewState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -78,6 +79,13 @@ class SearchFragment :
                binding.srLayout.isRefreshing = false
             }
 
+            is MainViewState.AddBookmark -> {
+                marvelAdapter.addBookmark(viewState.item)
+            }
+
+            is MainViewState.DeleteBookmark -> {
+                marvelAdapter.deleteBookmark(viewState.item)
+            }
 
         }
     }

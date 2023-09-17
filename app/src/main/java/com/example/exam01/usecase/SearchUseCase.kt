@@ -16,7 +16,7 @@ class SearchUseCase @Inject constructor(
     private val marvelRepository: MarvelRepository,
 ) {
     operator fun invoke(
-         start: Int, size: Int
+        start: Int, size: Int = DEFAULT_LIMIT
     ): Flow<Result<SearchUiState>> = flow<Result<SearchUiState>> {
         val response = marvelRepository.searchCharacters(start, size)
         if (response.isSuccessful) {
@@ -31,10 +31,13 @@ class SearchUseCase @Inject constructor(
                 }
             } ?: throw SearchErrorException("[${response.code()}] - ${response.raw()}")
         } else {
-        throw NetworkFailureException("[${response.code()}] - ${response.raw()}")
-    }
-}.catch {
+            throw NetworkFailureException("[${response.code()}] - ${response.raw()}")
+        }
+    }.catch {
         emit(Result.Error(it))
+    }
+    companion object {
+        private const val DEFAULT_LIMIT = 20
     }
 }
 

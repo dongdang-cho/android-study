@@ -1,12 +1,8 @@
 package com.example.exam01.base
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.annotation.LayoutRes;
+import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.lifecycleScope
