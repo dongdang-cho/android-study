@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.example.exam01.network.response.Result" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_margin="10dp">
+
+        <ImageView
+            android:id="@+id/iv_character"
+            setUrlImg="@{item.toStringThumbnail()}"
+            android:layout_width="0dp"
+            android:layout_height="180dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:text="@{item.name}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/ctb_favorite"
+            app:layout_constraintTop_toBottomOf="@id/iv_character" />
+
+        <CheckBox
+            android:id="@+id/ctb_favorite"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/check_favorite"
+            android:button="@null"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_character" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_name">
+
+            <TextView
+                android:id="@+id/tv_series_text_cnt"
+                android:layout_width="wrap_content"
+                android:layout_height="15dp"
+                android:layout_marginRight="20dp"
+                android:text="series : "
+                android:textSize="10sp"
+                app:layout_constraintRight_toLeftOf="@id/v_margin01"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_series_cnt"
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:text="@{String.valueOf(item.series.items.size)}"
+                android:textSize="10sp"
+                app:layout_constraintRight_toLeftOf="@id/v_margin01"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/v_margin01"
+                android:layout_width="10dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_event_text_cnt"
+                android:layout_width="35dp"
+                android:layout_height="15dp"
+                android:text="events: "
+                android:textSize="10sp"
+                app:layout_constraintLeft_toRightOf="@id/v_margin01"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_event_cnt"
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:text="@{String.valueOf(item.events.items.size)}"
+                android:textSize="10sp"
+                app:layout_constraintLeft_toRightOf="@id/tv_event_text_cnt"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_urls_text_cnt"
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:layout_marginRight="20dp"
+                android:text="urls: "
+                android:textSize="10sp"
+                app:layout_constraintRight_toLeftOf="@id/v_margin01"
+                app:layout_constraintTop_toBottomOf="@id/tv_series_text_cnt" />
+
+            <TextView
+                android:id="@+id/tv_urls_cnt"
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:text="@{String.valueOf(item.urls.size)}"
+                android:textSize="10sp"
+                app:layout_constraintRight_toLeftOf="@id/v_margin01"
+                app:layout_constraintTop_toBottomOf="@id/tv_series_text_cnt" />
+
+            <TextView
+                android:id="@+id/tv_comics_text_cnt"
+                android:layout_width="35dp"
+                android:layout_height="15dp"
+                android:text="comics: "
+                android:textSize="10sp"
+                app:layout_constraintLeft_toRightOf="@id/v_margin01"
+                app:layout_constraintTop_toBottomOf="@id/tv_event_text_cnt" />
+
+            <TextView
+                android:id="@+id/tv_comics_cnt"
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:text="@{String.valueOf(item.comics.items.size)}"
+                android:textSize="10sp"
+                app:layout_constraintLeft_toRightOf="@id/tv_comics_text_cnt"
+                app:layout_constraintTop_toBottomOf="@id/tv_event_cnt" />
+
+            <TextView
+                android:id="@+id/tv_stories_text_cnt"
+                android:layout_width="wrap_content"
+                android:layout_height="15dp"
+                android:layout_marginRight="20dp"
+                android:text="stories: "
+                android:textSize="10sp"
+                app:layout_constraintRight_toLeftOf="@id/v_margin01"
+                app:layout_constraintTop_toBottomOf="@id/tv_urls_text_cnt" />
+
+            <TextView
+                android:id="@+id/tv_stories_cnt"
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:text="@{String.valueOf(item.stories.items.size)}"
+                android:textSize="10sp"
+                app:layout_constraintRight_toLeftOf="@id/v_margin01"
+                app:layout_constraintTop_toBottomOf="@id/tv_urls_cnt" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
