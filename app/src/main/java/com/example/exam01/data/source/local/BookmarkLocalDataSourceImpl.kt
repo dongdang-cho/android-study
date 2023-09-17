@@ -1,7 +1,6 @@
 package com.example.exam01.data.source.local
 
 import com.example.exam01.room.BookmarkDao
-import com.example.exam01.room.BookmarkEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

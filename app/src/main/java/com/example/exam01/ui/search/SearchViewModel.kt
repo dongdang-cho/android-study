@@ -1,14 +1,14 @@
 package com.example.exam01.ui.search
 
 import androidx.lifecycle.viewModelScope
+import com.example.domain.exceptions.EmptyBodyException
+import com.example.domain.exceptions.NetworkFailureException
+import com.example.domain.exceptions.SearchErrorException
+import com.example.domain.usecase.SearchUiState
+import com.example.domain.usecase.SearchUseCase
+import com.example.domain.util.Result
 import com.example.exam01.base.BaseViewModel
 import com.example.exam01.data.repo.BookmarkRepository
-import com.example.exam01.exception.EmptyBodyException
-import com.example.exam01.exception.NetworkFailureException
-import com.example.exam01.exception.SearchErrorException
-import com.example.exam01.usecase.SearchUiState
-import com.example.exam01.usecase.SearchUseCase
-import com.example.exam01.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
@@ -53,11 +53,12 @@ class SearchViewModel @Inject constructor(
                         }
 
                         is SearchUiState.GetData -> {
-                            offsetCount += result.data.data.count
+                            val getData = (result.data as SearchUiState.GetData)
+                            offsetCount += getData.data.count
 
                             val bookmarkIdList = bookMarkList.first().map { it.id }
 
-                            val toConvertBookmarkList = result.data.data.results.map {
+                            val toConvertBookmarkList = getData.data.results.map {
                                 it.copy(isBookmark = bookmarkIdList.contains(it.id))
                             }
 

@@ -1,7 +1,6 @@
 package com.example.exam01.data.repo
 
 import com.example.exam01.data.source.local.BookmarkLocalDataSource
-import com.example.exam01.room.BookmarkEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

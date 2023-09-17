@@ -1,6 +1,5 @@
 package com.example.exam01.data.source.local
 
-import com.example.exam01.room.BookmarkEntity
 import kotlinx.coroutines.flow.Flow
 
 interface BookmarkLocalDataSource {
